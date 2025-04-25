@@ -1,10 +1,16 @@
-import classNames from "classnames"
-import { ReactComponent as DeleteIcon } from "../../assets/icons/delete.svg"
-import { ReactComponent as EditIcon } from "../../assets/icons/edit.svg"
-import CircularProgressBar from "../CircularProgressBar"
-import "./style.scss"
+import DeleteIcon  from "../../assets/icons/delete-img.svg"
+import EditIcon  from "../../assets/icons/edit.svg"
+import { CircularProgressBar } from "../Progressbar/progressbarr"
 
-const TaskCard = ({ task }: any) => {
+import "./taskcard.scss"
+
+interface TaskCardProps {
+  task: Task;
+  onEdit: (task: Task) => void;
+  onDelete: (task: Task) => void;
+}
+
+export const TaskCard = ({ task, onEdit, onDelete }: TaskCardProps) => {
   const { id, title, priority, status, progress } = task
 
   return (
@@ -15,7 +21,7 @@ const TaskCard = ({ task }: any) => {
       </div>
       <div className="flex">
         <span className="priority-title">Priority</span>
-        <span className={classNames(`${priority}-priority`, "priority")}>{priority}</span>
+        <span className={`${priority}-priority priority`}>{priority}</span>
       </div>
       <div className="task-status-wrapper">
         <button className="status">{status}</button>
@@ -24,11 +30,17 @@ const TaskCard = ({ task }: any) => {
         <CircularProgressBar strokeWidth={2} sqSize={24} percentage={progress} />
       </div>
       <div className="actions">
-        <EditIcon className="mr-20 cp" />
-        <DeleteIcon className="cp" />
+        <img 
+            src={EditIcon} 
+            className="mr-20 cp" 
+            onClick={()=> onEdit(task)}
+        />
+        <img 
+            src={DeleteIcon} 
+            className="cp" 
+            onClick={()=> onDelete(task)}
+        />
       </div>
     </div>
   )
 }
-
-export default TaskCard

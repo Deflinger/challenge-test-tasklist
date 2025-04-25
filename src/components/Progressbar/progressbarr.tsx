@@ -1,5 +1,5 @@
 import { FC } from "react"
-import "./style.scss"
+import "./progressbarr.scss"
 
 interface Props {
   strokeWidth: number
@@ -7,7 +7,7 @@ interface Props {
   percentage?: number
 }
 
-const CircularProgressBar: FC<Props> = (props) => {
+export const CircularProgressBar: FC<Props> = (props) => {
   const { strokeWidth, sqSize, percentage } = props
   const radius = (sqSize - strokeWidth) / 2
   const viewBox = `0 0 ${sqSize} ${sqSize}`
@@ -38,5 +38,3 @@ const CircularProgressBar: FC<Props> = (props) => {
     </svg>
   )
 }
-
-export default CircularProgressBar

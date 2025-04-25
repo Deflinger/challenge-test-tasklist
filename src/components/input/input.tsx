@@ -1,4 +1,4 @@
-import "./style.scss"
+import "./input.scss"
 
 interface InputProps {
   label: string
@@ -7,14 +7,20 @@ interface InputProps {
   name: string
   value: string
 }
-
-const Input = ({ label, placeholder, onChange, name, value }: InputProps) => {
+    
+export const Input = ({ label, placeholder, onChange, name, value }: InputProps) => {
   return (
     <div className="input">
-      <label htmlFor="">{label}</label>
-      <input type="text" placeholder={placeholder} onChange={onChange} name={name} value={value} />
+      <label htmlFor={name}>
+        {label}
+      </label>
+      <input 
+        type="text" 
+        placeholder={placeholder} 
+        onChange={onChange} 
+        name={name} 
+        value={value} 
+      />
     </div>
   )
 }
-
-export default Input
