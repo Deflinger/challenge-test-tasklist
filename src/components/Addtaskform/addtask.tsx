@@ -6,14 +6,14 @@ import { Modal } from "../Modal/modal"
 import { Input } from "../input/input"
 
 interface AddEditTaskFormProps {
+  modalTitle: string
   onClose: ()=> void;
   onSubmit: (task :{title: string; priority: string})=>void;
 }
 
-export const AddEditTaskForm = ({onClose, onSubmit}:AddEditTaskFormProps) => {
+export const AddEditTaskForm = ({modalTitle,onClose, onSubmit}:AddEditTaskFormProps) => {
   const [title,setTitle] = useState('');
   const [priority, setPriority] = useState<"high" | "medium" | "low">("medium");
-
   const handleSubmit = (e: React.FormEvent) =>{
     e.preventDefault();
     if(!title.trim())return;
@@ -26,7 +26,7 @@ export const AddEditTaskForm = ({onClose, onSubmit}:AddEditTaskFormProps) => {
       <form onSubmit={handleSubmit}>
         <div className="add-edit-modal">
           <div className="flx-between">
-            <span className="modal-title">Add Task </span>
+            <span className="modal-title">{modalTitle} </span>
             <img 
               src={Close} 
               className="cp"

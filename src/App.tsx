@@ -4,7 +4,7 @@ import { Button } from "./components/Button/button"
 import { DeleteModal } from "./components/DeleteModal/deletemodal"
 import { TaskCard } from "./components/Taskcard/taskcard"
 import { AddEditTaskForm } from "./components/Addtaskform/addtask"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { taskList as initialtasks} from "./components/siteData/tasklist"
 
 
@@ -13,9 +13,11 @@ function App() {
   const [task,setTask]= useState(initialtasks)
   const [taskToDelete, setTaskToDelete] = useState<Task | null>(null);
   const [taskToAdd, setTaskToAdd] = useState<Task | null>(null);
+  const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
   const [showAddModal,setShowAddModal] = useState(false)
   const [showDeleteModal,setShowDeleteModal] = useState(false)
-
+  const [selector, setSelector] = useState("")
+  
   const handleDeleteTask = () => {
     if (taskToDelete) {
       setTask((prevTasks) => prevTasks.filter(t => t.id !== taskToDelete.id));
@@ -23,6 +25,7 @@ function App() {
       setTaskToDelete(null);
     }
   };
+  /*
   const handleAddTask = ()=>{
     if(taskToAdd){
       setTask((prev) => [...prev, taskToAdd])
@@ -30,7 +33,9 @@ function App() {
       setTaskToAdd(null);
     }
   }
+*/
   const handleAdd = () =>{
+    setSelector("Add Task")
     setShowAddModal(true)
   }
   const handleCloseAdd = () => {
@@ -46,13 +51,14 @@ function App() {
     setShowDeleteModal(true);
   };
 
-
-
   const handleEdit = (task: Task) => {
+    setTaskToEdit(task);
+    setShowAddModal(true)
+    setSelector("Edit Task")
   console.log("Editando:", task);
-  // Aquí puedes activar showAddEditModal y setear el task seleccionado
+  
 };
-
+/*
 useEffect(() => {
   if (taskToAdd) {
     setTask((prev) => [...prev, taskToAdd]);
@@ -60,7 +66,7 @@ useEffect(() => {
     setShowAddModal(false);
   }
 }, [taskToAdd]);
-
+*/
 
   return (
     <>
@@ -87,14 +93,27 @@ useEffect(() => {
       </div>
       {showAddModal &&   (
         <AddEditTaskForm 
+          modalTitle={selector}
           onClose={handleCloseAdd} 
           onSubmit={(newtask) => {
-            setTaskToAdd({...newtask,
-              id:crypto.randomUUID(),
-              status:"Pending",
-              progress:0
-            })
-            console.log("new task",task)
+            if (selector === "Edit Task" && taskToEdit) {
+              setTask((prev) =>
+                prev.map((t) =>
+                  t.id === taskToEdit.id ? { ...t, ...newtask } : t
+                )
+              );
+            } else {
+              setTask((prev) => [
+                ...prev,
+                {
+                  ...newtask,
+                  id: crypto.randomUUID(),
+                  status: "Pending",
+                  progress: 0,
+                },
+              ]);
+            }
+
             }
           } 
         />
