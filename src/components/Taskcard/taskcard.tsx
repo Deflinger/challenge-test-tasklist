@@ -1,3 +1,4 @@
+import { useState } from "react";
 import DeleteIcon  from "../../assets/icons/delete-img.svg"
 import EditIcon  from "../../assets/icons/edit.svg"
 import { CircularProgressBar } from "../Progressbar/progressbarr"
@@ -8,10 +9,14 @@ interface TaskCardProps {
   task: Task;
   onEdit: (task: Task) => void;
   onDelete: (task: Task) => void;
+  onStatusChange: (task: Task) => void; 
 }
 
-export const TaskCard = ({ task, onEdit, onDelete }: TaskCardProps) => {
+export const TaskCard = ({ task, onEdit, onDelete,onStatusChange }: TaskCardProps) => {
   const { id, title, priority, status, progress } = task
+  const [titleStatus,setTitleStatus]= useState("")
+
+  
 
   return (
     <div className="task-card">
@@ -24,7 +29,14 @@ export const TaskCard = ({ task, onEdit, onDelete }: TaskCardProps) => {
         <span className={`${priority}-priority priority`}>{priority}</span>
       </div>
       <div className="task-status-wrapper">
-        <button className="status">{status}</button>
+        <button 
+            className="status"
+            onClick={()=> onStatusChange(task)}
+        >
+
+          {status}
+
+        </button>
       </div>
       <div className="progress">
         <CircularProgressBar strokeWidth={2} sqSize={24} percentage={progress} />

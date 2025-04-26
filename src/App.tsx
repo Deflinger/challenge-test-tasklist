@@ -12,12 +12,26 @@ import { taskList as initialtasks} from "./components/siteData/tasklist"
 function App() {
   const [task,setTask]= useState(initialtasks)
   const [taskToDelete, setTaskToDelete] = useState<Task | null>(null);
-  const [taskToAdd, setTaskToAdd] = useState<Task | null>(null);
   const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
   const [showAddModal,setShowAddModal] = useState(false)
   const [showDeleteModal,setShowDeleteModal] = useState(false)
   const [selector, setSelector] = useState("")
   
+  const handleStatus =(task:Task)=>{
+    let nextStatus="";
+    if(task.status=="To Do"){
+      nextStatus = "In Progress";
+    }else if(task.status == "In Progress"){
+      nextStatus = "Done";
+    }else if(task.status== "Done"){
+      nextStatus = "To Do";
+    }
+    setTask((prevTasks) =>
+      prevTasks.map((t) =>
+        t.id === task.id? { ...t, status: nextStatus }: t
+      )
+    );
+  }
   const handleDeleteTask = () => {
     if (taskToDelete) {
       setTask((prevTasks) => prevTasks.filter(t => t.id !== taskToDelete.id));
@@ -25,15 +39,26 @@ function App() {
       setTaskToDelete(null);
     }
   };
-  /*
-  const handleAddTask = ()=>{
-    if(taskToAdd){
-      setTask((prev) => [...prev, taskToAdd])
-      setShowAddModal(false);
-      setTaskToAdd(null);
+  
+  const handleTask = (newtask:Task)=>{
+    if (selector === "Edit Task" && taskToEdit) {
+      setTask((prev) =>
+        prev.map((t) =>
+          t.id === taskToEdit.id ? { ...t, ...newtask } : t
+        )
+      );
+    } else {
+      setTask((prev) => [
+        ...prev,
+        {
+          ...newtask,
+          id: crypto.randomUUID(),
+          status: "Pending",
+          progress: 0,
+        },
+      ]);
     }
   }
-*/
   const handleAdd = () =>{
     setSelector("Add Task")
     setShowAddModal(true)
@@ -43,8 +68,7 @@ function App() {
   }
   const handleCloseDelete = () => {
     setShowDeleteModal(false);
-  };
-    
+  };   
   const handleDelete = (task: Task) => {
     setTaskToDelete(task);
     console.log("Task Deleted"); 
@@ -58,15 +82,6 @@ function App() {
   console.log("Editando:", task);
   
 };
-/*
-useEffect(() => {
-  if (taskToAdd) {
-    setTask((prev) => [...prev, taskToAdd]);
-    setTaskToAdd(null);
-    setShowAddModal(false);
-  }
-}, [taskToAdd]);
-*/
 
   return (
     <>
@@ -87,6 +102,7 @@ useEffect(() => {
                 task={task}
                 onEdit={handleEdit} 
                 onDelete={handleDelete}
+                onStatusChange={handleStatus}
             />
           ))}
         </div>
@@ -95,26 +111,7 @@ useEffect(() => {
         <AddEditTaskForm 
           modalTitle={selector}
           onClose={handleCloseAdd} 
-          onSubmit={(newtask) => {
-            if (selector === "Edit Task" && taskToEdit) {
-              setTask((prev) =>
-                prev.map((t) =>
-                  t.id === taskToEdit.id ? { ...t, ...newtask } : t
-                )
-              );
-            } else {
-              setTask((prev) => [
-                ...prev,
-                {
-                  ...newtask,
-                  id: crypto.randomUUID(),
-                  status: "Pending",
-                  progress: 0,
-                },
-              ]);
-            }
-
-            }
+          onSubmit={(newtask) => {handleTask(newtask)}
           } 
         />
       )}
