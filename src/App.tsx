@@ -19,16 +19,20 @@ function App() {
   
   const handleStatus =(task:Task)=>{
     let nextStatus="";
+    let nextProgress=0;
     if(task.status=="To Do"){
       nextStatus = "In Progress";
+      nextProgress= 50;
     }else if(task.status == "In Progress"){
       nextStatus = "Done";
+      nextProgress= 100;
     }else if(task.status== "Done"){
       nextStatus = "To Do";
+      nextProgress= 0;
     }
     setTask((prevTasks) =>
       prevTasks.map((t) =>
-        t.id === task.id? { ...t, status: nextStatus }: t
+        t.id === task.id? { ...t, status: nextStatus,progress:nextProgress }: t
       )
     );
   }
