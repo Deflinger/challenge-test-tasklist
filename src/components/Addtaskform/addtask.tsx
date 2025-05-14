@@ -6,12 +6,13 @@ import { Modal } from "../Modal/modal"
 import { Input } from "../input/input"
 
 interface AddEditTaskFormProps {
-  modalTitle: string
+  modalButton: string;
+  modalTitle: string;
   onClose: ()=> void;
   onSubmit: (task :{title: string; priority: string})=>void;
 }
 
-export const AddEditTaskForm = ({modalTitle,onClose, onSubmit}:AddEditTaskFormProps) => {
+export const AddEditTaskForm = ({modalButton,modalTitle,onClose, onSubmit}:AddEditTaskFormProps) => {
   const [title,setTitle] = useState('');
   const [priority, setPriority] = useState<"high" | "medium" | "low">("medium");
   const handleSubmit = (e: React.FormEvent) =>{
@@ -57,7 +58,7 @@ export const AddEditTaskForm = ({modalTitle,onClose, onSubmit}:AddEditTaskFormPr
             </ul>
           </div>
           <div className="flx-right mt-50">
-            <Button title="Add" type="submit" />
+            <Button title={modalButton} type="submit" />
           </div>
         </div>
       </form>

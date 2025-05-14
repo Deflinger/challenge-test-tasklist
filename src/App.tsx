@@ -13,9 +13,10 @@ function App() {
   const [task,setTask]= useState(initialtasks)
   const [taskToDelete, setTaskToDelete] = useState<Task | null>(null);
   const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
-  const [showAddModal,setShowAddModal] = useState(false)
-  const [showDeleteModal,setShowDeleteModal] = useState(false)
-  const [selector, setSelector] = useState("")
+  const [showAddModal,setShowAddModal] = useState(false);
+  const [showDeleteModal,setShowDeleteModal] = useState(false);
+  const [selector, setSelector] = useState("");
+  const [modbutton,setModButton]= useState("");
   
   const handleStatus =(task:Task)=>{
     let nextStatus="";
@@ -50,20 +51,22 @@ function App() {
         prev.map((t) =>
           t.id === taskToEdit.id ? { ...t, ...newtask } : t
         )
+        
       );
-    } else {
+    } else {    
       setTask((prev) => [
         ...prev,
         {
           ...newtask,
           id: crypto.randomUUID(),
-          status: "Pending",
+          status: "To Do",
           progress: 0,
         },
       ]);
     }
   }
   const handleAdd = () =>{
+    setModButton("Add")
     setSelector("Add Task")
     setShowAddModal(true)
   }
@@ -83,6 +86,7 @@ function App() {
     setTaskToEdit(task);
     setShowAddModal(true)
     setSelector("Edit Task")
+    setModButton("Edit")
   console.log("Editando:", task);
   
 };
@@ -113,6 +117,7 @@ function App() {
       </div>
       {showAddModal &&   (
         <AddEditTaskForm 
+          modalButton={modbutton}
           modalTitle={selector}
           onClose={handleCloseAdd} 
           onSubmit={(newtask) => {handleTask(newtask)}
