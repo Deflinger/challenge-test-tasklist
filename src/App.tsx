@@ -17,6 +17,7 @@ function App() {
   const [showDeleteModal,setShowDeleteModal] = useState(false);
   const [selector, setSelector] = useState("");
   const [modbutton,setModButton]= useState("");
+  const [modinput,setModInput] = useState("")
   
   const handleStatus =(task:Task)=>{
     let nextStatus="";
@@ -68,6 +69,7 @@ function App() {
   const handleAdd = () =>{
     setModButton("Add")
     setSelector("Add Task")
+    setModInput("")
     setShowAddModal(true)
   }
   const handleCloseAdd = () => {
@@ -87,6 +89,7 @@ function App() {
     setShowAddModal(true)
     setSelector("Edit Task")
     setModButton("Edit")
+    setModInput(task.title)
   console.log("Editando:", task);
   
 };
@@ -117,6 +120,7 @@ function App() {
       </div>
       {showAddModal &&   (
         <AddEditTaskForm 
+          modalInput={modinput}
           modalButton={modbutton}
           modalTitle={selector}
           onClose={handleCloseAdd} 

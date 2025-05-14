@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Close  from "../../assets/icons/close.svg"
 import "./addtask.scss"
 import { Button } from "../Button/button"
@@ -6,13 +6,14 @@ import { Modal } from "../Modal/modal"
 import { Input } from "../input/input"
 
 interface AddEditTaskFormProps {
+  modalInput:string;
   modalButton: string;
   modalTitle: string;
   onClose: ()=> void;
   onSubmit: (task :{title: string; priority: string})=>void;
 }
 
-export const AddEditTaskForm = ({modalButton,modalTitle,onClose, onSubmit}:AddEditTaskFormProps) => {
+export const AddEditTaskForm = ({modalInput,modalButton,modalTitle,onClose, onSubmit}:AddEditTaskFormProps) => {
   const [title,setTitle] = useState('');
   const [priority, setPriority] = useState<"high" | "medium" | "low">("medium");
   const handleSubmit = (e: React.FormEvent) =>{
@@ -21,7 +22,9 @@ export const AddEditTaskForm = ({modalButton,modalTitle,onClose, onSubmit}:AddEd
     onSubmit({title,priority});
     onClose();
   }
-
+  useEffect(() => {
+    setTitle(modalInput);
+  }, [modalInput]);
   return (
     <Modal>
       <form onSubmit={handleSubmit}>

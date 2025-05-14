@@ -1,4 +1,4 @@
-import { useState } from "react";
+
 import DeleteIcon  from "../../assets/icons/delete-img.svg"
 import EditIcon  from "../../assets/icons/edit.svg"
 import { CircularProgressBar } from "../Progressbar/progressbarr"
@@ -14,7 +14,7 @@ interface TaskCardProps {
 
 export const TaskCard = ({ task, onEdit, onDelete,onStatusChange }: TaskCardProps) => {
   const { id, title, priority, status, progress } = task
-  const [titleStatus,setTitleStatus]= useState("")
+  
 
   
 
